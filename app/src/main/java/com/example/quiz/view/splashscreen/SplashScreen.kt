@@ -1,6 +1,5 @@
 package com.example.quiz.view.splashscreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -21,7 +20,7 @@ import kotlinx.coroutines.delay
 fun SplashScreen(navController: NavController) {
     LaunchedEffect(key1 = true, block = {
         delay(3000)
-        navController.navigate(Screen.HomePage.route) {
+        navController.navigate(Screen.QuestionsPage.route) {
             popUpTo(Screen.SplashScreen.route) {
                 inclusive = true
             }

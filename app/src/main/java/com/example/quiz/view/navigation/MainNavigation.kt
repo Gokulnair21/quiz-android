@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.quiz.utility.Screen
 import com.example.quiz.view.home_page.HomePage
 import com.example.quiz.view.introduction_page.IntroductionPage
+import com.example.quiz.view.questions_page.QuestionsPage
 import com.example.quiz.view.splashscreen.SplashScreen
 
 @ExperimentalFoundationApi
@@ -26,6 +27,9 @@ fun MainNavigation() {
         }
         composable(Screen.HomePage.route) {
             HomePage(navController)
+        }
+        composable(Screen.QuestionsPage.route) {
+            QuestionsPage(navController)
         }
     }
 }

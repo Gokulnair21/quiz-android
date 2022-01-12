@@ -2,6 +2,7 @@ package com.example.quiz.view.introduction_page
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -14,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -28,18 +30,19 @@ fun IntroductionPage(navController: NavController) {
     var name by remember {
         mutableStateOf("")
     }
+    val configuration = LocalConfiguration.current
     Surface(color = MaterialTheme.colors.primary) {
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+        Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = 20.dp, vertical = 20.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.quiz),
                     contentDescription = "Quiz",
                     modifier = Modifier
-                        .size(300.dp)
+                        .size((configuration.screenWidthDp - 20).dp)
                         .padding(bottom = 20.dp)
                         .align(Alignment.CenterHorizontally)
                 )
@@ -68,15 +71,17 @@ fun IntroductionPage(navController: NavController) {
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = MaterialTheme.colors.secondary,
                         contentColor = MaterialTheme.colors.onSecondary
-                    ), onClick = { navController.navigate(Screen.HomePage.route) }) {
+                    ), onClick = { navController.navigate(Screen.HomePage.route) },
+                    shape = RoundedCornerShape(20.dp)
+                ) {
                     Text(
-                        text = "Lets play",
-                        fontSize = 15.sp,
+                        text = "Lets Play",
+                        fontSize = 20.sp,
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colors.onSecondary,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 10.dp)
+                            .padding(vertical = 8.dp)
                     )
                 }
             }
