@@ -1,3 +1,8 @@
 package com.example.quiz.data.model
 
-data class Category(val heading: String, val value: String, val imageID: Int)
+data class Category(
+    val heading: String,
+    val value: String,
+    val imageID: Int,
+    val totalQuestions: Int
+)

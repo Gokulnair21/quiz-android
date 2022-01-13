@@ -22,6 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.quiz.R
+import com.example.quiz.view.composables.CustomButton
 
 @Composable
 fun QuestionsPage(navController: NavController) {
@@ -58,25 +59,12 @@ fun QuestionsPage(navController: NavController) {
                 }
 
             }
-            Button(
-                shape = RoundedCornerShape(20.dp),
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = MaterialTheme.colors.onSecondary,
-                    backgroundColor = MaterialTheme.colors.secondary
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp, bottom = 10.dp, start = 20.dp, end = 20.dp),
-                onClick = {}
-            ) {
-                Text(
-                    text = "Next",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp)
+            Box(modifier = Modifier.padding(horizontal = 20.dp)) {
+                CustomButton(
+                    heading = "Next",
+                    onCLick = {
+
+                    }
                 )
             }
         }

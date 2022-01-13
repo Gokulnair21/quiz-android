@@ -2,6 +2,7 @@ package com.example.quiz.view.home_page
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -21,6 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.quiz.R
 import com.example.quiz.data.model.Category
+import com.example.quiz.utility.Screen
 
 
 @ExperimentalFoundationApi
@@ -37,7 +39,9 @@ fun HomePage(navController: NavController) {
                 fontWeight = FontWeight.Normal,
                 fontSize = 25.sp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(top = 30.dp, bottom = 5.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 30.dp, bottom = 5.dp)
             )
             Card(
                 modifier = Modifier
@@ -51,7 +55,9 @@ fun HomePage(navController: NavController) {
                     contentPadding = PaddingValues(10.dp)
                 ) {
                     items(categoryList.size) { index ->
-                        CategoryCard(category = categoryList[index])
+                        CategoryCard(category = categoryList[index]) {
+                            navController.navigate(Screen.QuestionsConfigurationPage.route)
+                        }
                     }
                 }
             }
@@ -63,48 +69,92 @@ fun HomePage(navController: NavController) {
 
 
 fun createCategoryList(): List<Category> {
-    return listOf<Category>(
+    return listOf(
         Category(
             heading = "Linux",
             value = "linux",
+            totalQuestions = 99,
             imageID = R.drawable.linux
+        ),
+        Category(
+            heading = "Bash",
+            value = "bash",
+            totalQuestions = 77,
+            imageID = R.drawable.bash
+        ),
+        Category(
+            heading = "HTML",
+            value = "html",
+            totalQuestions = 139,
+            imageID = R.drawable.html
+        ),
+        Category(
+            heading = "Javascript",
+            value = "javascript",
+            totalQuestions = 25,
+            imageID = R.drawable.javascript
+        ),
+        Category(
+            heading = "Laravel",
+            value = "laravel",
+            totalQuestions = 10,
+            imageID = R.drawable.laravel
+        ),
+        Category(
+            heading = "Kubernetes",
+            value = "kubernetes",
+            totalQuestions = 136,
+            imageID = R.drawable.kubernetes
+        ),
+        Category(
+            heading = "MySQL",
+            value = "mysql",
+            totalQuestions = 153,
+            imageID = R.drawable.mysql
+        ),
+        Category(
+            heading = "PHP",
+            value = "php",
+            totalQuestions = 181,
+            imageID = R.drawable.php
+        ),
+        Category(
+            heading = "Wordpress",
+            value = "wordpress",
+            totalQuestions = 66,
+            imageID = R.drawable.wordpress
         ),
         Category(
             heading = "DevOps",
             value = "devops",
+            totalQuestions = 23,
             imageID = R.drawable.devops
-        ),
-        Category(
-            heading = "Networking",
-            value = "networking",
-            imageID = R.drawable.networking
-        ),
-        Category(
-            heading = "Programming",
-            value = "programming",
-            imageID = R.drawable.programming
-        ),
-        Category(
-            heading = "Cloud",
-            value = "cloud",
-            imageID = R.drawable.cloud
         ),
         Category(
             heading = "Docker",
             value = "docker",
+            totalQuestions = 125,
             imageID = R.drawable.docker
+        ),
+        Category(
+            heading = "Random",
+            value = "",
+            totalQuestions = 0,
+            imageID = R.drawable.random
         ),
     )
 }
 
 
 @Composable
-fun CategoryCard(category: Category) {
+fun CategoryCard(category: Category, onClick: () -> Unit) {
     Card(
         backgroundColor = MaterialTheme.colors.primary.copy(alpha = 0.1F),
         elevation = 0.dp,
         shape = RoundedCornerShape(20.dp),
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier
+            .padding(10.dp)
+            .clickable { onClick.invoke() }
 
     ) {
         Column(
@@ -126,6 +176,15 @@ fun CategoryCard(category: Category) {
                 overflow = TextOverflow.Ellipsis,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colors.primary,
+                modifier = Modifier.padding(top = 10.dp)
+            )
+            Text(
+                text = "${category.totalQuestions} Questions",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Light,
                 color = MaterialTheme.colors.primary,
                 modifier = Modifier.padding(top = 10.dp)
             )

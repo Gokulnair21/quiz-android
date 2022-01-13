@@ -8,9 +8,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.quiz.utility.Screen
 import com.example.quiz.view.home_page.HomePage
 import com.example.quiz.view.introduction_page.IntroductionPage
+import com.example.quiz.view.question_configuration.QuestionConfigurationPage
 import com.example.quiz.view.questions_page.QuestionsPage
 import com.example.quiz.view.splashscreen.SplashScreen
+import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalPagerApi
 @ExperimentalFoundationApi
 @Composable
 fun MainNavigation() {
@@ -30,6 +33,9 @@ fun MainNavigation() {
         }
         composable(Screen.QuestionsPage.route) {
             QuestionsPage(navController)
+        }
+        composable(Screen.QuestionsConfigurationPage.route) {
+            QuestionConfigurationPage(navController)
         }
     }
 }

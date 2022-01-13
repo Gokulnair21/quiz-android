@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.quiz.R
 import com.example.quiz.utility.Screen
+import com.example.quiz.view.composables.CustomButton
 
 
 @Composable
@@ -67,23 +68,9 @@ fun IntroductionPage(navController: NavController) {
                         unfocusedBorderColor = MaterialTheme.colors.secondary
                     ),
                 )
-                Button(
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colors.secondary,
-                        contentColor = MaterialTheme.colors.onSecondary
-                    ), onClick = { navController.navigate(Screen.HomePage.route) },
-                    shape = RoundedCornerShape(20.dp)
-                ) {
-                    Text(
-                        text = "Lets Play",
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colors.onSecondary,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp)
-                    )
-                }
+               CustomButton(heading = "Lets Play") {
+                   navController.navigate(Screen.HomePage.route)
+               }
             }
 
         }
