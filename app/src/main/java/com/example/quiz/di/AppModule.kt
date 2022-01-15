@@ -14,7 +14,7 @@ import javax.inject.Singleton
 object AppModule {
 
     @Provides
-    fun provideQuestionsAPI() = RetrofitInstance.getQuestionsAPI()
+    fun provideQuestionsAPI(): QuestionsAPI = RetrofitInstance.getQuestionsAPI()
 
 
     @Singleton

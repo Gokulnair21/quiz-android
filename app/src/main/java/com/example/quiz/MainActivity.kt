@@ -12,7 +12,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.quiz.ui.theme.QuizTheme
 import com.example.quiz.view.navigation.MainNavigation
 import com.google.accompanist.pager.ExperimentalPagerApi
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 @ExperimentalPagerApi
 @ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {

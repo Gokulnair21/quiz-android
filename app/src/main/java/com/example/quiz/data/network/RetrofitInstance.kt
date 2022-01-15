@@ -7,10 +7,10 @@ object RetrofitInstance {
 
     private const val BASE_URL = " https://quizapi.io/api/v1/"
 
-    private val retrofit=Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(
-        BASE_URL).build()
+    private val retrofit= Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
+        .build()
 
-    fun getQuestionsAPI()  =  retrofit.create(QuestionsAPI::class.java)
+    fun getQuestionsAPI(): QuestionsAPI =  retrofit.create(QuestionsAPI::class.java)
 
 
 }

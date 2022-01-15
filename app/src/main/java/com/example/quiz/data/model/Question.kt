@@ -1,5 +1,6 @@
+package com.example.quiz.data.model
+
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.json.*
 
 
 
@@ -15,9 +16,8 @@ data class Question(
     @SerializedName("correct_answers")
     val correctAnswers: CorrectAnswers,
 
-    val explanation: String,
+    val explanation: String?,
     val tip: String? = null,
-    val tags: JsonArray,
     val category: String,
     val difficulty: String
 )
@@ -31,16 +31,16 @@ data class Answers(
     val answerB: String,
 
     @SerializedName("answer_c")
-    val answerC: String,
+    val answerC: String?,
 
     @SerializedName("answer_d")
-    val answerD: String,
+    val answerD: String?,
 
     @SerializedName("answer_e")
-    val answerE: String? = null,
+    val answerE: String?,
 
     @SerializedName("answer_f")
-    val answerF: String? = null
+    val answerF: String? ,
 )
 
 data class CorrectAnswers(

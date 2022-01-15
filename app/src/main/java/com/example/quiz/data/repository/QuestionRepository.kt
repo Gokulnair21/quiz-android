@@ -6,6 +6,6 @@ import javax.inject.Inject
 class QuestionRepository @Inject constructor(private val questionsAPI: QuestionsAPI) {
 
 
-    suspend fun getQuestions() = questionsAPI.getQuestions(difficulty = "easy")
+    suspend fun getQuestions() = questionsAPI.getQuestions()
 
 }
