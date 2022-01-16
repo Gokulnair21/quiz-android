@@ -1,7 +1,6 @@
 package com.example.quiz.view.questions_page
 
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quiz.data.model.Question
@@ -23,19 +22,22 @@ class QuestionPageViewModel @Inject constructor(private val questionRepository: 
     val currentQuestion = MutableStateFlow<Int>(0)
     val points = MutableStateFlow(0)
 
-    private fun getQuestions() = viewModelScope.launch(Dispatchers.IO) {
-        try {
-            questions.value = Resource.Loading()
-            val questionsList = questionRepository.getQuestions()
-            Log.d("ViewModel", questionsList.toString())
-            question.value = questionsList[currentQuestion.value]
-            Log.d("ViewModel", questionsList.toString())
-            questions.value = Resource.Success(questionsList)
+     fun getQuestions(category: String, limit: String, difficulty: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                questions.value = Resource.Loading()
+                val questionsList = questionRepository.getQuestions(
+                    category = category,
+                    difficulty = difficulty,
+                    limit = limit
+                )
+                question.value = questionsList[currentQuestion.value]
+                questions.value = Resource.Success(questionsList)
 
-        } catch (e: Exception) {
-            questions.value = Resource.Error(e.message.toString())
+            } catch (e: Exception) {
+                questions.value = Resource.Error(e.message.toString())
+            }
         }
-    }
 
 
     fun nextQuestion(answerStatus: Boolean) {
@@ -44,10 +46,6 @@ class QuestionPageViewModel @Inject constructor(private val questionRepository: 
         if (answerStatus) {
             points.value += 1
         }
-    }
-
-    init {
-        getQuestions()
     }
 
 

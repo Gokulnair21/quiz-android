@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.quiz.utility.Screen
-import com.example.quiz.view.ResultPage
+import com.example.quiz.view.result_page.ResultPage
 import com.example.quiz.view.home_page.HomePage
 import com.example.quiz.view.introduction_page.IntroductionPage
 import com.example.quiz.view.question_configuration.QuestionConfigurationPage
@@ -34,13 +34,25 @@ fun MainNavigation() {
         composable(Screen.HomePage.route) {
             HomePage(navController)
         }
-        composable(Screen.QuestionsPage.route) {
-            QuestionsPage(navController)
+        composable(Screen.QuestionsPage.route, arguments = listOf(
+            navArgument("category") { type = NavType.StringType },
+            navArgument("limit") { type = NavType.StringType },
+            navArgument("difficulty") { type = NavType.StringType }
+        )) {
+            QuestionsPage(
+                navController = navController,
+                category = it.arguments!!.getString("category")!!,
+                difficulty = it.arguments!!.getString("difficulty")!!,
+                limit = it.arguments!!.getString("limit")!!
+            )
         }
         composable(Screen.QuestionsConfigurationPage.route, arguments = listOf(
             navArgument("category") { type = NavType.StringType }
         )) {
-            QuestionConfigurationPage(navController)
+            QuestionConfigurationPage(
+                navController = navController,
+                category = it.arguments!!.getString("category")!!
+            )
         }
         composable(Screen.ResultPage.route, arguments = listOf(
             navArgument("correct_questions") { type = NavType.IntType },
@@ -55,8 +67,3 @@ fun MainNavigation() {
     }
 }
 
-//arguments = listOf(
-//navArgument("category") { type = NavType.StringType },
-//navArgument("difficult") { type = NavType.StringType },
-//navArgument("limit") { type = NavType.StringType }
-//)

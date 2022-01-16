@@ -56,13 +56,15 @@ fun HomePage(navController: NavController) {
                 ) {
                     items(categoryList.size) { index ->
                         CategoryCard(category = categoryList[index]) {
-                            navController.navigate(Screen.QuestionsConfigurationPage.route)
+                            navController.navigate(
+                                Screen.QuestionsConfigurationPage.createRoute(
+                                    categoryList[index].value
+                                )
+                            )
                         }
                     }
                 }
             }
-
-
         }
     }
 }

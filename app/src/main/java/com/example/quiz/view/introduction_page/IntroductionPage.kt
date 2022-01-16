@@ -4,6 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +52,13 @@ fun IntroductionPage(navController: NavController) {
                 Text(text = "Let's Play Quiz,", fontSize = 30.sp, fontWeight = FontWeight.Bold)
                 Text(text = "Enter your information below", fontSize = 15.sp)
                 OutlinedTextField(
+                    leadingIcon = {
+                        Icon(
+                            Icons.Default.Person,
+                            contentDescription = "Person",
+                            tint = MaterialTheme.colors.onPrimary
+                        )
+                    },
                     value = name,
                     onValueChange = {
                         name = it
@@ -63,14 +72,19 @@ fun IntroductionPage(navController: NavController) {
                         fontStyle = FontStyle.Normal
                     ),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
+                        cursorColor = MaterialTheme.colors.secondary,
                         backgroundColor = MaterialTheme.colors.primary,
                         focusedBorderColor = MaterialTheme.colors.secondary,
                         unfocusedBorderColor = MaterialTheme.colors.secondary
                     ),
                 )
-               CustomButton(heading = "Lets Play") {
-                   navController.navigate(Screen.HomePage.route)
-               }
+                CustomButton(heading = "Lets Play") {
+                    navController.navigate(Screen.HomePage.route) {
+                        popUpTo(Screen.IntroductionPage.route) {
+                            inclusive = true
+                        }
+                    }
+                }
             }
 
         }

@@ -1,4 +1,4 @@
-package com.example.quiz.view
+package com.example.quiz.view.result_page
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -89,7 +89,7 @@ fun ResultPage(navController: NavController, correctQuestions: Int, totalQuestio
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 fun PreviewResultPage() {
     ResultPage(navController = rememberNavController(), 20, 20)

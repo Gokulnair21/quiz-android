@@ -9,7 +9,7 @@ sealed class Screen(val route: String) {
             "questions_configuration_page/$category"
     }
 
-    object QuestionsPage : Screen("questions_page/{category}/{difficult}/{limit}") {
+    object QuestionsPage : Screen("questions_page/{category}/{difficulty}/{limit}") {
         fun createRoute(category: String, limit: String, difficulty: String) =
             "questions_page/$category/$difficulty/$limit"
     }
@@ -17,6 +17,5 @@ sealed class Screen(val route: String) {
     object ResultPage : Screen("result_page/{correct_questions}/{total_questions}") {
         fun createRoute(totalQuestions: Int, correctQuestions: Int): String =
             "result_page/$correctQuestions/$totalQuestions"
-
     }
 }

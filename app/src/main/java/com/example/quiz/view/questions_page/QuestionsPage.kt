@@ -1,6 +1,7 @@
 package com.example.quiz.view.questions_page
 
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LinearProgressIndicator
@@ -24,9 +25,17 @@ import com.example.quiz.view.composables.CustomButton
 @Composable
 fun QuestionsPage(
     navController: NavController,
-    viewModel: QuestionPageViewModel = hiltViewModel()
+    viewModel: QuestionPageViewModel = hiltViewModel(),
+    category: String,
+    limit: String,
+    difficulty: String
 ) {
 
+    viewModel.getQuestions(
+        category = category,
+        limit = limit,
+        difficulty = difficulty
+    )
     val scrollState = rememberScrollState()
     val questions by viewModel.questions.collectAsState()
     val question by viewModel.question.collectAsState()
@@ -36,10 +45,25 @@ fun QuestionsPage(
 
         when (questions) {
             is Resource.Loading -> {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colors.secondary,
-                    modifier = Modifier.wrapContentSize(align = Alignment.Center)
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(align = Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Getting your questions",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Normal,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 10.dp),
+                        textAlign = TextAlign.Center
+                    )
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colors.secondary,
+                    )
+                }
 
             }
             is Resource.Success -> {
@@ -114,7 +138,7 @@ fun Question(
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp, vertical = 20.dp),
             fontWeight = FontWeight.Normal,
-            fontSize = 27.sp,
+            fontSize = 24.sp,
             textAlign = TextAlign.Center
         )
         Card(
@@ -220,7 +244,7 @@ fun QuestionOption(answer: String, isSelected: Boolean, onCLick: () -> Unit) {
             backgroundColor = if (isSelected) MaterialTheme.colors.secondary else MaterialTheme.colors.primary.copy(
                 0.1F
             ),
-            contentColor = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.primary
+            contentColor = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.primary,
         ),
         shape = RoundedCornerShape(5.dp),
         onClick = onCLick,
@@ -236,7 +260,7 @@ fun QuestionOption(answer: String, isSelected: Boolean, onCLick: () -> Unit) {
                 .fillMaxWidth()
                 .padding(vertical = 10.dp, horizontal = 5.dp),
             textAlign = TextAlign.Center,
-            fontSize = 20.sp,
+            fontSize = 18.sp,
         )
     }
 }
