@@ -94,7 +94,7 @@ fun QuestionConfigurationPage(navController: NavController, category: String) {
                             difficulty = "medium"
                         )
                     ) {
-                        popUpTo(Screen.QuestionsConfigurationPage.createRoute(category)) {
+                        popUpTo(Screen.QuestionsConfigurationPage.route) {
                             inclusive = true
                         }
                     }

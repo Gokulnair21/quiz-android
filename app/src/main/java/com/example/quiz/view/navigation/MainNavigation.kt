@@ -8,6 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.quiz.utility.Screen
+import com.example.quiz.view.category_page.CategoryCard
+import com.example.quiz.view.category_page.CategoryPage
 import com.example.quiz.view.result_page.ResultPage
 import com.example.quiz.view.home_page.HomePage
 import com.example.quiz.view.introduction_page.IntroductionPage
@@ -28,11 +30,11 @@ fun MainNavigation() {
         composable(Screen.IntroductionPage.route) {
             IntroductionPage(navController)
         }
-        composable(Screen.SplashScreen.route) {
-            SplashScreen(navController)
-        }
         composable(Screen.HomePage.route) {
             HomePage(navController)
+        }
+        composable(Screen.CategoryPage.route) {
+            CategoryPage(navController)
         }
         composable(Screen.QuestionsPage.route, arguments = listOf(
             navArgument("category") { type = NavType.StringType },

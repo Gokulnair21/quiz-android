@@ -79,7 +79,7 @@ fun IntroductionPage(navController: NavController) {
                     ),
                 )
                 CustomButton(heading = "Lets Play") {
-                    navController.navigate(Screen.HomePage.route) {
+                    navController.navigate(Screen.CategoryPage.route) {
                         popUpTo(Screen.IntroductionPage.route) {
                             inclusive = true
                         }

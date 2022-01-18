@@ -1,5 +1,6 @@
 package com.example.quiz.view.questions_page
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -12,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,9 +42,27 @@ fun QuestionsPage(
     val questions by viewModel.questions.collectAsState()
     val question by viewModel.question.collectAsState()
     val currentQuestion by viewModel.currentQuestion.collectAsState()
+    var showAlertDialog by remember {
+        mutableStateOf(false)
+    }
+    BackHandler() {
 
+    }
     Surface(color = MaterialTheme.colors.primary, modifier = Modifier.fillMaxSize()) {
-
+        if (showAlertDialog) {
+            AlertDialogBox(
+                onConfirm = {
+                    showAlertDialog=false
+                    navController.navigateUp()
+                },
+                onDismiss = {
+                    showAlertDialog = false
+                },
+                onDismissRequest = {
+                    showAlertDialog = false
+                }
+            )
+        }
         when (questions) {
             is Resource.Loading -> {
                 Column(
@@ -81,10 +101,7 @@ fun QuestionsPage(
                                     viewModel.points.value += 1
                                 }
                                 navController.navigate(
-                                    Screen.ResultPage.createRoute(
-                                        totalQuestions = it.size,
-                                        correctQuestions = viewModel.points.value
-                                    )
+                                    Screen.ResultPage.route
                                 ) {
                                     popUpTo(Screen.QuestionsPage.route) {
                                         inclusive = true
@@ -101,7 +118,9 @@ fun QuestionsPage(
             }
         }
     }
-
+    BackHandler() {
+        showAlertDialog = true
+    }
 
 }
 
@@ -200,6 +219,32 @@ fun Question(
 
 
 @Composable
+fun AlertDialogBox(onDismissRequest: () -> Unit, onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        backgroundColor = MaterialTheme.colors.background,
+        contentColor = MaterialTheme.colors.onBackground,
+        title = {
+            Text(text = "Alert")
+        },
+        text = {
+            Text(text = "Are you sure you want to exit form the game")
+        },
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text(text = "Confirm")
+            }
+
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = "Dimiss")
+            }
+        }
+    )
+}
+
+@Composable
 fun ProgressIndicator(totalQuestions: Int, currentQuestionNumber: Int) {
     Card(
         elevation = 0.dp,
@@ -265,9 +310,10 @@ fun QuestionOption(answer: String, isSelected: Boolean, onCLick: () -> Unit) {
     }
 }
 
-//
-//@Preview
-//@Composable
-//fun PreviewQuestionPage() {
-//    QuestionsPage(navController = rememberNavController())
-//}
+
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewQuestionPage() {
+
+}

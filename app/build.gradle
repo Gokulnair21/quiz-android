@@ -85,5 +85,10 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager-indicators:0.19.0"
     //lottie
     implementation "com.airbnb.android:lottie-compose:4.2.2"
+    //room database
+    def room_version = "2.4.1"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
 
 }
