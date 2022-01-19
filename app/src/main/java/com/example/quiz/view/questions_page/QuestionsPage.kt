@@ -45,14 +45,11 @@ fun QuestionsPage(
     var showAlertDialog by remember {
         mutableStateOf(false)
     }
-    BackHandler() {
-
-    }
     Surface(color = MaterialTheme.colors.primary, modifier = Modifier.fillMaxSize()) {
         if (showAlertDialog) {
             AlertDialogBox(
                 onConfirm = {
-                    showAlertDialog=false
+                    showAlertDialog = false
                     navController.navigateUp()
                 },
                 onDismiss = {
@@ -101,7 +98,7 @@ fun QuestionsPage(
                                     viewModel.points.value += 1
                                 }
                                 navController.navigate(
-                                    Screen.ResultPage.route
+                                    Screen.ResultPage.createRoute(it.size,viewModel.points.value)
                                 ) {
                                     popUpTo(Screen.QuestionsPage.route) {
                                         inclusive = true
@@ -223,22 +220,27 @@ fun AlertDialogBox(onDismissRequest: () -> Unit, onConfirm: () -> Unit, onDismis
     AlertDialog(
         backgroundColor = MaterialTheme.colors.background,
         contentColor = MaterialTheme.colors.onBackground,
+        shape = RoundedCornerShape(20.dp),
         title = {
             Text(text = "Alert")
         },
         text = {
-            Text(text = "Are you sure you want to exit form the game")
+            Text(
+                text = "Are you sure you want to exit form the game ?",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Normal
+            )
         },
         onDismissRequest = onDismissRequest,
         confirmButton = {
             TextButton(onClick = onConfirm) {
-                Text(text = "Confirm")
+                Text(text = "Confirm", fontSize = 15.sp)
             }
 
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(text = "Dimiss")
+                Text(text = "Dismiss", fontSize = 15.sp)
             }
         }
     )
@@ -311,9 +313,12 @@ fun QuestionOption(answer: String, isSelected: Boolean, onCLick: () -> Unit) {
 }
 
 
-
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun PreviewQuestionPage() {
-
+    AlertDialogBox(
+        onConfirm = {},
+        onDismiss = {},
+        onDismissRequest = {}
+    )
 }

@@ -23,16 +23,23 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.quiz.R
 import com.example.quiz.utility.Screen
 import com.example.quiz.view.composables.CustomButton
+import com.example.quiz.view.composables.OutlineTextFieldWithValidation
+import kotlinx.coroutines.flow.asStateFlow
 
 
 @Composable
-fun IntroductionPage(navController: NavController) {
-    var name by remember {
-        mutableStateOf("")
-    }
+fun IntroductionPage(
+    navController: NavController,
+    introductionPageViewModel: IntroductionPageViewModel = viewModel()
+) {
+    val name by introductionPageViewModel.name.collectAsState()
+
+    val showError by introductionPageViewModel.showError.collectAsState()
+
     val configuration = LocalConfiguration.current
     Surface(color = MaterialTheme.colors.primary) {
         Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
@@ -51,7 +58,7 @@ fun IntroductionPage(navController: NavController) {
                 )
                 Text(text = "Let's Play Quiz,", fontSize = 30.sp, fontWeight = FontWeight.Bold)
                 Text(text = "Enter your information below", fontSize = 15.sp)
-                OutlinedTextField(
+                OutlineTextFieldWithValidation(
                     leadingIcon = {
                         Icon(
                             Icons.Default.Person,
@@ -60,9 +67,11 @@ fun IntroductionPage(navController: NavController) {
                         )
                     },
                     value = name,
-                    onValueChange = {
-                        name = it
+                    onChange = {
+                        introductionPageViewModel.getValueForName(it)
                     },
+                    showError = showError,
+                    error = "Please enter your name",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 50.dp),
@@ -75,14 +84,18 @@ fun IntroductionPage(navController: NavController) {
                         cursorColor = MaterialTheme.colors.secondary,
                         backgroundColor = MaterialTheme.colors.primary,
                         focusedBorderColor = MaterialTheme.colors.secondary,
-                        unfocusedBorderColor = MaterialTheme.colors.secondary
+                        unfocusedBorderColor = MaterialTheme.colors.secondary,
+                        errorBorderColor = MaterialTheme.colors.onPrimary
                     ),
                 )
                 CustomButton(heading = "Lets Play") {
-                    navController.navigate(Screen.CategoryPage.route) {
-                        popUpTo(Screen.IntroductionPage.route) {
-                            inclusive = true
+                    if (introductionPageViewModel.onCLickLetsPlay()) {
+                        navController.navigate(Screen.CategoryPage.route) {
+                            popUpTo(Screen.IntroductionPage.route) {
+                                inclusive = true
+                            }
                         }
+
                     }
                 }
             }
