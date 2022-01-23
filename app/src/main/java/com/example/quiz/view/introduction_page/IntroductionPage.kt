@@ -23,6 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.quiz.R
 import com.example.quiz.utility.Screen
@@ -34,7 +35,7 @@ import kotlinx.coroutines.flow.asStateFlow
 @Composable
 fun IntroductionPage(
     navController: NavController,
-    introductionPageViewModel: IntroductionPageViewModel = viewModel()
+    introductionPageViewModel: IntroductionPageViewModel = hiltViewModel()
 ) {
     val name by introductionPageViewModel.name.collectAsState()
 
@@ -90,7 +91,7 @@ fun IntroductionPage(
                 )
                 CustomButton(heading = "Lets Play") {
                     if (introductionPageViewModel.onCLickLetsPlay()) {
-                        navController.navigate(Screen.CategoryPage.route) {
+                        navController.navigate(Screen.HomePage.route) {
                             popUpTo(Screen.IntroductionPage.route) {
                                 inclusive = true
                             }

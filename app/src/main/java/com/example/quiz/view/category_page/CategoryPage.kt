@@ -23,13 +23,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.quiz.R
 import com.example.quiz.data.model.Category
+import com.example.quiz.utility.Constants
 import com.example.quiz.utility.Screen
 
 
 @ExperimentalFoundationApi
 @Composable
 fun CategoryPage(navController: NavController) {
-    val categoryList = createCategoryList()
+    val categoryList = Constants.categories
     Surface(color = MaterialTheme.colors.primary) {
         Column(
             modifier = Modifier
@@ -68,78 +69,6 @@ fun CategoryPage(navController: NavController) {
             }
         }
     }
-}
-
-
-fun createCategoryList(): List<Category> {
-    return listOf(
-        Category(
-            heading = "Linux",
-            value = "linux",
-            totalQuestions = 99,
-            imageID = R.drawable.linux
-        ),
-        Category(
-            heading = "Bash",
-            value = "bash",
-            totalQuestions = 77,
-            imageID = R.drawable.bash
-        ),
-        Category(
-            heading = "HTML",
-            value = "html",
-            totalQuestions = 139,
-            imageID = R.drawable.html
-        ),
-        Category(
-            heading = "Javascript",
-            value = "javascript",
-            totalQuestions = 25,
-            imageID = R.drawable.javascript
-        ),
-        Category(
-            heading = "Laravel",
-            value = "laravel",
-            totalQuestions = 10,
-            imageID = R.drawable.laravel
-        ),
-        Category(
-            heading = "Kubernetes",
-            value = "kubernetes",
-            totalQuestions = 136,
-            imageID = R.drawable.kubernetes
-        ),
-        Category(
-            heading = "MySQL",
-            value = "mysql",
-            totalQuestions = 153,
-            imageID = R.drawable.mysql
-        ),
-        Category(
-            heading = "PHP",
-            value = "php",
-            totalQuestions = 181,
-            imageID = R.drawable.php
-        ),
-        Category(
-            heading = "Wordpress",
-            value = "wordpress",
-            totalQuestions = 66,
-            imageID = R.drawable.wordpress
-        ),
-        Category(
-            heading = "DevOps",
-            value = "devops",
-            totalQuestions = 23,
-            imageID = R.drawable.devops
-        ),
-        Category(
-            heading = "Docker",
-            value = "docker",
-            totalQuestions = 125,
-            imageID = R.drawable.docker
-        )
-    )
 }
 
 

@@ -91,10 +91,10 @@ fun QuestionConfigurationPage(navController: NavController, category: String) {
                         Screen.QuestionsPage.createRoute(
                             category = category,
                             limit = limit.toInt().toString(),
-                            difficulty = "medium"
+                            difficulty = difficultyList[pagerState.currentPage].value
                         )
                     ) {
-                        popUpTo(Screen.QuestionsConfigurationPage.route) {
+                        popUpTo(Screen.CategoryPage.route) {
                             inclusive = true
                         }
                     }

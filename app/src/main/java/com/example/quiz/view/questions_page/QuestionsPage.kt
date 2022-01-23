@@ -33,11 +33,6 @@ fun QuestionsPage(
     difficulty: String
 ) {
 
-    viewModel.getQuestions(
-        category = category,
-        limit = limit,
-        difficulty = difficulty
-    )
     val scrollState = rememberScrollState()
     val questions by viewModel.questions.collectAsState()
     val question by viewModel.question.collectAsState()
@@ -90,15 +85,25 @@ fun QuestionsPage(
                         question = question!!,
                         currentQuestionNumber = currentQuestion + 1,
                         totalQuestions = it.size,
-                        onClickNext = { answerStatus ->
+                        onClickNext = { answerStatus, answerValue ->
                             if (currentQuestion + 1 < it.size) {
-                                viewModel.nextQuestion(answerStatus)
+                                viewModel.nextQuestion(answerStatus, answerValue)
                             } else {
-                                if (answerStatus) {
-                                    viewModel.points.value += 1
+                                if (answerValue.isNotEmpty()) {
+                                    if (answerStatus) {
+                                        viewModel.points.value += 1
+                                    }
+                                } else {
+                                    viewModel.skippedQuestions.value += 1
                                 }
                                 navController.navigate(
-                                    Screen.ResultPage.createRoute(it.size,viewModel.points.value)
+                                    Screen.ResultPage.createRoute(
+                                        category,
+                                        difficulty,
+                                        it.size,
+                                        viewModel.points.value,
+                                        viewModel.skippedQuestions.value
+                                    )
                                 ) {
                                     popUpTo(Screen.QuestionsPage.route) {
                                         inclusive = true
@@ -111,7 +116,22 @@ fun QuestionsPage(
                 }
             }
             is Resource.Error -> {
-                Text(text = questions.errorMessage.toString())
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(align = Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = questions.errorMessage.toString(),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Normal,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 10.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
@@ -128,7 +148,7 @@ fun Question(
     question: Question,
     totalQuestions: Int,
     currentQuestionNumber: Int,
-    onClickNext: (Boolean) -> Unit
+    onClickNext: (Boolean, String) -> Unit
 ) {
 
 
@@ -208,7 +228,13 @@ fun Question(
         Box(modifier = Modifier.padding(horizontal = 20.dp)) {
             CustomButton(
                 heading = "Next",
-                onCLick = { onClickNext(isAnswerCorrect) }
+                onCLick = {
+                    val answer = answerSelected
+                    val answerCorrect = isAnswerCorrect
+                    answerSelected = ""
+                    isAnswerCorrect = false
+                    onClickNext(answerCorrect, answer)
+                }
             )
         }
     }
@@ -284,41 +310,8 @@ fun ProgressIndicator(totalQuestions: Int, currentQuestionNumber: Int) {
 }
 
 
-@Composable
-fun QuestionOption(answer: String, isSelected: Boolean, onCLick: () -> Unit) {
-    OutlinedButton(
-        colors = ButtonDefaults.outlinedButtonColors(
-            backgroundColor = if (isSelected) MaterialTheme.colors.secondary else MaterialTheme.colors.primary.copy(
-                0.1F
-            ),
-            contentColor = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.primary,
-        ),
-        shape = RoundedCornerShape(5.dp),
-        onClick = onCLick,
-        border = BorderStroke(
-            width = 1.dp,
-            color = if (isSelected) MaterialTheme.colors.secondary else MaterialTheme.colors.primary
-        ),
-        modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp)
-    ) {
-        Text(
-            text = answer,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 10.dp, horizontal = 5.dp),
-            textAlign = TextAlign.Center,
-            fontSize = 18.sp,
-        )
-    }
-}
-
-
 @Preview
 @Composable
 fun PreviewQuestionPage() {
-    AlertDialogBox(
-        onConfirm = {},
-        onDismiss = {},
-        onDismissRequest = {}
-    )
+
 }

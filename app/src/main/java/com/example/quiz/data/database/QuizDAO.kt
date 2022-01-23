@@ -13,6 +13,6 @@ interface QuizDAO {
     suspend fun insertQuiz(quiz: Quiz)
 
     @Query("Select * from QuizTable ORDER BY id DESC")
-    suspend fun getAllQuiz():List<Quiz>
+     suspend fun getAllQuiz():List<Quiz>
 
 }

@@ -8,11 +8,12 @@ import androidx.room.PrimaryKey
 data class Quiz(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    var id: Int = 0,
 
     val totalQuestions: Int,
-    val correctAnswers: Int,
-    val wrongAnswers: Int,
+    val correctQuestions: Int,
+    val wrongQuestions: Int,
     val category: String,
-    val difficulty: String
+    val difficulty: String,
+    val skippedQuestions: Int
 )
