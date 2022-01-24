@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +36,7 @@ import com.example.quiz.data.model.CorrectAnswers
 import com.example.quiz.data.model.Quiz
 import com.example.quiz.ui.theme.amber
 import com.example.quiz.utility.Screen
+import com.example.quiz.view.composables.CustomButton
 
 
 @ExperimentalFoundationApi
@@ -48,52 +50,81 @@ fun HomePage(navController: NavController, homePageViewModel: HomePageViewModel 
     val correctQuestions by homePageViewModel.correctQuestions.collectAsState()
     val wrongQuestions by homePageViewModel.wrongQuestions.collectAsState()
     val skippedQuestions by homePageViewModel.skippedQuestions.collectAsState()
+    if (quizzes.isEmpty()) {
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        backgroundColor = MaterialTheme.colors.primary,
-        content = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(scrollState)
-                    .padding(20.dp)
-            ) {
+      Surface(
+          color = MaterialTheme.colors.primary,
+      ) {
+          Column(
+              verticalArrangement = Arrangement.Center,
+              horizontalAlignment = Alignment.CenterHorizontally,
+              modifier = Modifier
+                  .fillMaxSize()
+                  .padding(horizontal = 20.dp)
+          ) {
+              Image(
+                  painter = painterResource(id = R.drawable.empty),
+                  contentDescription = "Empty List",
+                  modifier = Modifier
+                      .fillMaxWidth()
+                      .height((LocalConfiguration.current.screenWidthDp).dp)
+              )
+              Text(text = "Hello $name, \nSeems like you haven't played any game. So let's proceed to an one quick game.", fontSize = 18.sp, fontWeight = FontWeight.Normal, textAlign = TextAlign.Center)
+              Spacer(modifier = Modifier.height(30.dp))
+              CustomButton(heading = "New Quiz") {
+                  navController.navigate(Screen.CategoryPage.route)
+              }
+          }
+      }
+    } else {
 
-                Text(
-                    text = "HELLO",
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colors.secondary
-                )
-                Text(text = name, fontSize = 30.sp, fontWeight = FontWeight.Bold)
-                QuizCardOverView(
-                    totalQuizzes = totalQuizzes,
-                    correctQuestions = correctQuestions,
-                    wrongQuestions = wrongQuestions,
-                    skippedQuestions = skippedQuestions
-                )
-                if (quizzes.isNotEmpty()) {
-                    PreviousQuizInformation(quizzes)
-                }
-            }
-        },
-        floatingActionButtonPosition = FabPosition.End,
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = { navController.navigate(Screen.CategoryPage.route) },
-                backgroundColor = MaterialTheme.colors.secondary,
-                contentColor = MaterialTheme.colors.onSecondary,
-                icon = {
-                    Icon(
-                        Icons.Default.Add,
-                        contentDescription = "Add",
+
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            backgroundColor = MaterialTheme.colors.primary,
+            content = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(scrollState)
+                        .padding(20.dp)
+                ) {
+
+                    Text(
+                        text = "HELLO",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colors.secondary
                     )
-                },
-                text = { Text(text = "New Quiz", fontWeight = FontWeight.Bold) }
-            )
-        }
-    )
+                    Text(text = name, fontSize = 30.sp, fontWeight = FontWeight.Bold)
+                    QuizCardOverView(
+                        totalQuizzes = totalQuizzes,
+                        correctQuestions = correctQuestions,
+                        wrongQuestions = wrongQuestions,
+                        skippedQuestions = skippedQuestions
+                    )
+                    if (quizzes.isNotEmpty()) {
+                        PreviousQuizInformation(quizzes)
+                    }
+                }
+            },
+            floatingActionButtonPosition = FabPosition.End,
+            floatingActionButton = {
+                ExtendedFloatingActionButton(
+                    onClick = { navController.navigate(Screen.CategoryPage.route) },
+                    backgroundColor = MaterialTheme.colors.secondary,
+                    contentColor = MaterialTheme.colors.onSecondary,
+                    icon = {
+                        Icon(
+                            Icons.Default.Add,
+                            contentDescription = "Add",
+                        )
+                    },
+                    text = { Text(text = "New Quiz", fontWeight = FontWeight.Bold) }
+                )
+            }
+        )
+    }
 }
 
 @Composable
@@ -143,7 +174,7 @@ fun QuizCardOverView(
                     size = 50,
                     color = Color.Red,
                     value = wrongQuestions.toString(),
-                            fontSize = 20
+                    fontSize = 20
                 )
                 SummaryValues(
                     size = 50,
@@ -158,18 +189,26 @@ fun QuizCardOverView(
 }
 
 @Composable
-fun SummaryHeading(heading:String){
-    Text(text = heading, modifier = Modifier.padding(vertical = 10.dp), fontSize = 15.sp, fontStyle = FontStyle.Normal, fontWeight = FontWeight.Light)
+fun SummaryHeading(heading: String) {
+    Text(
+        text = heading,
+        modifier = Modifier.padding(vertical = 10.dp),
+        fontSize = 15.sp,
+        fontStyle = FontStyle.Normal,
+        fontWeight = FontWeight.Light
+    )
 }
 
 
 @Composable
-fun SummaryValues(size:Int,value:String,color:Color,fontSize:Int){
+fun SummaryValues(size: Int, value: String, color: Color, fontSize: Int) {
     Box(
-        modifier = Modifier.size(size.dp).background(
-            color = color,
-            shape = CircleShape
-        ),
+        modifier = Modifier
+            .size(size.dp)
+            .background(
+                color = color,
+                shape = CircleShape
+            ),
         contentAlignment = Alignment.Center
     ) {
         Text(

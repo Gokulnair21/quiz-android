@@ -1,5 +1,7 @@
 package com.example.quiz.view.question_configuration
 
+import android.os.Build
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -10,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,12 +20,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.airbnb.lottie.compose.*
+import coil.ImageLoader
+import coil.compose.rememberImagePainter
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import com.example.quiz.R
 import com.example.quiz.data.model.Difficulty
 import com.example.quiz.utility.Screen
 import com.example.quiz.view.composables.CustomButton
-import com.example.quiz.view.composables.CustomDropDownMenu
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -108,12 +113,16 @@ fun QuestionConfigurationPage(navController: NavController, category: String) {
 @Composable
 fun DifficultyLevelCard(difficulty: Difficulty) {
     val configuration = LocalConfiguration.current
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(difficulty.resourceID))
-    val progress by animateLottieCompositionAsState(
-        composition = composition,
-        isPlaying = true,
-        iterations = LottieConstants.IterateForever,
-    )
+    val context = LocalContext.current
+    val imageLoader = ImageLoader.Builder(context)
+        .componentRegistry {
+            if (Build.VERSION.SDK_INT >= 28) {
+                add(ImageDecoderDecoder(context))
+            } else {
+                add(GifDecoder())
+            }
+        }
+        .build()
     Card(
         modifier = Modifier
             .size((configuration.screenWidthDp - 20).dp),
@@ -123,15 +132,17 @@ fun DifficultyLevelCard(difficulty: Difficulty) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(10.dp)
+                .padding(horizontal = 30.dp, vertical = 10.dp)
         ) {
-            LottieAnimation(
-                composition = composition,
-                progress,
+            Image(
+                painter = rememberImagePainter(
+                    imageLoader = imageLoader,
+                    data = difficulty.resourceID
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1F)
-                    .padding(20.dp)
+                    .weight(1F),
+                contentDescription = difficulty.heading
             )
             Text(
                 text = difficulty.heading,
