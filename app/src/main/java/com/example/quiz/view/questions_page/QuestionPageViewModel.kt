@@ -28,7 +28,7 @@ class QuestionPageViewModel @Inject constructor(
     val points = MutableStateFlow(0)
     val skippedQuestions = MutableStateFlow(0)
 
-    private fun getQuestions(category: String, limit: String, difficulty: String) =
+     fun getQuestions(category: String, limit: String, difficulty: String) =
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 questions.value = Resource.Loading()

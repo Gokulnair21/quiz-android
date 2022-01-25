@@ -136,7 +136,7 @@ fun ResultPage(
                 )
                 CustomButton(heading = "Take new Quiz") {
                     homePageViewModel.getQuiz()
-                    navController.navigate(Screen.HomePage.route) {
+                    navController.navigate(Screen.CategoryPage.route) {
                         popUpTo(Screen.ResultPage.route) {
                             inclusive = true
                         }
@@ -149,6 +149,7 @@ fun ResultPage(
     }
     BackHandler() {
         homePageViewModel.getQuiz()
+        navController.navigateUp()
     }
 }
 

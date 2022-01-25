@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -63,17 +64,17 @@ fun QuestionsPage(
                         .wrapContentSize(align = Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colors.secondary,
+                    )
                     Text(
                         text = "Getting your questions",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 10.dp),
+                            .padding(top = 15.dp),
                         textAlign = TextAlign.Center
-                    )
-                    CircularProgressIndicator(
-                        color = MaterialTheme.colors.secondary,
                     )
                 }
 
@@ -116,22 +117,13 @@ fun QuestionsPage(
                 }
             }
             is Resource.Error -> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(align = Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = questions.errorMessage.toString(),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Normal,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 10.dp),
-                        textAlign = TextAlign.Center
+                ErrorScreen(onClick = {
+                    viewModel.getQuestions(
+                        category = category,
+                        limit = limit,
+                        difficulty = difficulty
                     )
-                }
+                }, errorMessage = questions.errorMessage.toString())
             }
         }
     }
@@ -141,6 +133,37 @@ fun QuestionsPage(
 
 }
 
+
+@Composable
+fun ErrorScreen(onClick: () -> Unit, errorMessage: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(align = Alignment.Center)
+            .padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+
+        Image(
+            painter = painterResource(id = R.drawable.error),
+            contentDescription = "Error",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height((LocalConfiguration.current.screenWidthDp).dp)
+        )
+        Text(
+            text = errorMessage,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Normal,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp),
+            textAlign = TextAlign.Center
+        )
+        CustomButton(heading = "Retry", onCLick = onClick)
+    }
+}
 
 @Composable
 fun Question(
