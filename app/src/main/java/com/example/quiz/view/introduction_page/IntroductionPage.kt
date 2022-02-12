@@ -29,13 +29,15 @@ import com.example.quiz.R
 import com.example.quiz.utility.Screen
 import com.example.quiz.view.composables.CustomButton
 import com.example.quiz.view.composables.OutlineTextFieldWithValidation
+import com.example.quiz.view.home_page.HomePageViewModel
 import kotlinx.coroutines.flow.asStateFlow
 
 
 @Composable
 fun IntroductionPage(
     navController: NavController,
-    introductionPageViewModel: IntroductionPageViewModel = hiltViewModel()
+    introductionPageViewModel: IntroductionPageViewModel = hiltViewModel(),
+    homePageViewModel: HomePageViewModel
 ) {
     val name by introductionPageViewModel.name.collectAsState()
 
@@ -91,6 +93,7 @@ fun IntroductionPage(
                 )
                 CustomButton(heading = "Lets Play") {
                     if (introductionPageViewModel.onCLickLetsPlay()) {
+                        homePageViewModel.getName(name)
                         navController.navigate(Screen.HomePage.route) {
                             popUpTo(Screen.IntroductionPage.route) {
                                 inclusive = true
@@ -110,5 +113,4 @@ fun IntroductionPage(
 @Preview
 @Composable
 fun IntroductionPagePreview() {
-    IntroductionPage(navController = rememberNavController())
 }

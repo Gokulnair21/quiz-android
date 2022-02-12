@@ -38,6 +38,11 @@ class HomePageViewModel @Inject constructor(
         skippedQuestions.value = quiz.value.getAllSkippedQuestions()
     }
 
+
+    fun getName(value: String) {
+        name.value = value
+    }
+
     init {
         name.value = preferenceRepository.getUserName() ?: ""
         getQuiz()

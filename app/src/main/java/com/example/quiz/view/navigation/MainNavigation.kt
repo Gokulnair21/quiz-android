@@ -33,7 +33,7 @@ fun MainNavigation() {
             SplashScreen(navController)
         }
         composable(Screen.IntroductionPage.route) {
-            IntroductionPage(navController)
+            IntroductionPage(navController,homePageViewModel=homePageViewModel)
         }
         composable(Screen.HomePage.route) {
             HomePage(navController, homePageViewModel)
